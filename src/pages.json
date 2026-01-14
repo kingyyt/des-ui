@@ -1,0 +1,56 @@
+{
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^u--(.*)": "uview-plus/components/u-$1/u-$1.vue",
+      "^up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+      "^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/search/search",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/profile/profile",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "Des App",
+    "navigationBarBackgroundColor": "#0a1128",
+    "backgroundColor": "#0a1128"
+  },
+  "tabBar": {
+    "color": "#94a3b8",
+    "selectedColor": "#ffffff",
+    "backgroundColor": "#0f172a",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/search/search",
+        "text": "Search"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "Collections"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "Profile"
+      }
+    ]
+  }
+}
