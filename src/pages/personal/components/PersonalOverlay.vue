@@ -51,30 +51,30 @@
       Share Profile
     </button>
 
-    <!-- Bottom Icons -->
+    <!-- Mask for BottomActionSheet -->
     <view 
-      class="flex justify-center space-x-6 mb-8 w-full transition-all duration-1000 ease-out transform"
+      v-if="sheetExpanded"
+      class="fixed inset-0 bg-black/20 backdrop-blur-lg z-40 transition-opacity duration-500"
+      @click="sheetExpanded = false"
+      @touchmove.stop.prevent
+    ></view>
+
+    <!-- Bottom Action Sheet -->
+    <view 
+      class="absolute inset-x-0 bottom-0 z-50 transition-all duration-1000 ease-out transform"
       :style="{ transitionDelay: active ? '1000ms' : '0ms' }"
       :class="active ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
     >
-       <view class="w-12 h-12 rounded-full bg-[#dbeafe] flex items-center justify-center hover:scale-110 transition-transform">
-          <u-icon name="grid" color="#1e3a8a" size="22"></u-icon>
-       </view>
-       <view class="w-12 h-12 rounded-full bg-[#fef9c3] flex items-center justify-center hover:scale-110 transition-transform">
-          <u-icon name="scan" color="#854d0e" size="22"></u-icon>
-       </view>
-       <view class="w-12 h-12 rounded-full bg-[#f3e8ff] flex items-center justify-center hover:scale-110 transition-transform">
-          <u-icon name="file-text" color="#6b21a8" size="22"></u-icon>
-       </view>
-       <view class="w-12 h-12 rounded-full bg-[#d1fae5] flex items-center justify-center hover:scale-110 transition-transform">
-          <u-icon name="list" color="#065f46" size="22"></u-icon>
-       </view>
+       <BottomActionSheet v-model="sheetExpanded" />
     </view>
   </view>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue';
+import BottomActionSheet from './BottomActionSheet.vue';
+
+const sheetExpanded = ref(false);
 
 const props = defineProps({
   show: {
