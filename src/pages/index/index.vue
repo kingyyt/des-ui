@@ -1,8 +1,11 @@
 <template>
-  <view class="min-h-screen bg-[#0a1128] text-white pb-24 overflow-hidden font-sans">
+  <view class="min-h-screen bg-[#0a1128] text-white pb-24 overflow-hidden font-sans relative">
+    <!-- Animated Background -->
+    <BackgroundCanvas />
+
     <!-- Header -->
     <view 
-      class="px-6 flex justify-start items-center animate-fade-in-down"
+      class="px-6 flex justify-start items-center animate-fade-in-down relative z-10"
       :style="{ paddingTop: headerPaddingTop, height: '88px', alignItems: 'center' }"
     >
       <view class="flex items-center space-x-4 mr-4">
@@ -16,70 +19,22 @@
     </view>
 
     <!-- Greeting -->
-    <view class="mt-8 px-6 animate-slide-in-left" style="animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards;">
+    <view class="mt-8 px-6 animate-slide-in-left relative z-10" style="animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards;">
       <text class="text-4xl font-bold leading-tight block">Hello,</text>
       <text class="text-4xl font-bold leading-tight block">Emily Kane</text>
     </view>
 
     <!-- Card List -->
-    <view v-for="(card, index) in cards" :key="card.id" 
-          class="mt-8 mx-6 bg-[#1e293b] rounded-[32rpx] p-5 shadow-2xl animate-slide-in-right transform transition-all duration-500 hover:scale-[1.02]"
-          :style="{ animationDelay: `${0.4 + index * 0.2}s`, opacity: 0, animationFillMode: 'forwards' }">
-      
-      <!-- Card Header -->
-      <view class="flex justify-between items-center mb-4">
-        <view class="flex items-center space-x-3">
-          <u-image :src="card.user.avatar" width="40px" height="40px" shape="circle" border="2px solid #3b82f6"></u-image>
-          <view>
-            <text class="text-white font-bold text-lg block leading-none">{{ card.user.name }}</text>
-            <text class="text-gray-400 text-xs block mt-1">{{ card.user.handle }}</text>
-          </view>
-        </view>
-      </view>
-
-      <!-- Image Grid (1 Left Big + 4 Right Small) -->
-      <view class="grid grid-cols-2 gap-3 h-64">
-        <!-- Big Image (Left) -->
-        <view class="col-span-1 h-full rounded-2xl overflow-hidden">
-          <u-image :src="card.images[0]" width="100%" height="100%" mode="aspectFill" @click="openPreview(index, 0)"></u-image>
-        </view>
-        
-        <!-- Small Images Grid (Right) -->
-        <view class="col-span-1 grid grid-cols-2 grid-rows-2 gap-2 h-full">
-          <view class="rounded-xl overflow-hidden">
-            <u-image :src="card.images[1]" width="100%" height="100%" mode="aspectFill" @click="openPreview(index, 1)"></u-image>
-          </view>
-          <view class="rounded-xl overflow-hidden">
-            <u-image :src="card.images[2]" width="100%" height="100%" mode="aspectFill" @click="openPreview(index, 2)"></u-image>
-          </view>
-          <view class="rounded-xl overflow-hidden">
-            <u-image :src="card.images[3]" width="100%" height="100%" mode="aspectFill" @click="openPreview(index, 3)"></u-image>
-          </view>
-          <view class="rounded-xl overflow-hidden">
-            <u-image :src="card.images[4]" width="100%" height="100%" mode="aspectFill" @click="openPreview(index, 4)"></u-image>
-          </view>
-        </view>
-      </view>
-
-      <!-- Card Footer -->
-      <view class="flex justify-between items-center mt-5">
-        <view class="flex items-center space-x-4">
-          <view class="flex items-center space-x-1">
-            <u-icon name="heart" color="#94a3b8" size="20"></u-icon>
-            <text class="text-gray-400 text-sm">{{ card.stats.likes }}</text>
-          </view>
-          <view class="flex items-center space-x-1">
-            <u-icon name="chat" color="#94a3b8" size="20"></u-icon>
-            <text class="text-gray-400 text-sm">{{ card.stats.comments }}</text>
-          </view>
-        </view>
-        <view 
-          class="w-10 h-10 bg-[#3b82f6] rounded-full flex items-center justify-center shadow-lg shadow-blue-500/50 active:scale-95 transition-transform"
-          @click="openDetail(card)"
-        >
-          <u-icon name="arrow-right" color="#ffffff" size="20"></u-icon>
-        </view>
-      </view>
+    <view class="px-6 pb-20">
+      <FeedCard 
+        v-for="(card, index) in cards" 
+        :key="card.id"
+        :card="card"
+        class="mt-8 animate-slide-in-right"
+        :style="{ animationDelay: `${0.4 + index * 0.2}s`, opacity: 0, animationFillMode: 'forwards' }"
+        @preview="handlePreview"
+        @detail="openDetail"
+      />
     </view>
 
     <!-- Custom Tabbar -->
@@ -108,6 +63,8 @@ import { onLoad } from '@dcloudio/uni-app';
 import CustomTabbar from '@/components/CustomTabbar/CustomTabbar.vue';
 import ImagePreview from '@/components/ImagePreview/ImagePreview.vue';
 import PropertyDetail from '@/components/PropertyDetail/PropertyDetail.vue';
+import BackgroundCanvas from './components/BackgroundCanvas.vue';
+import FeedCard from './components/FeedCard.vue';
 
 const title = ref('Hello');
 // Detail state
@@ -128,6 +85,8 @@ const cards = ref([
       handle: '@steinsgate',
       avatar: '/static/img/pexels-didsss-1643919.jpg'
     },
+    title: 'Laboratory Memories',
+    description: 'A collection of moments from the Future Gadget Laboratory. These are precious memories that span across different world lines.',
     images: [
       '/static/img/pexels-ekamelev-920157.jpg',
       '/static/img/pexels-ekamelev-920163.jpg',
@@ -147,16 +106,71 @@ const cards = ref([
       handle: '@madscientist',
       avatar: '/static/img/pexels-alexander-mass-748453803-18868016.jpg'
     },
+    title: 'Operation Skuld',
+    description: 'The final mission to reach Steins Gate. El Psy Kongroo.',
     images: [
       '/static/img/pexels-francesco-ungaro-3630025.jpg',
       '/static/img/pexels-leonardo-lamas-32247393-7001550.jpg',
       '/static/img/pexels-tomtookit-1914663-3538659.jpg',
-      '/static/img/pexels-didsss-1643919.jpg',
-      '/static/img/pexels-ekamelev-920157.jpg'
+      '/static/img/pexels-didsss-1643919.jpg'
     ],
     stats: {
       likes: 104,
       comments: 42
+    }
+  },
+  {
+    id: 3,
+    user: {
+      name: 'Mayuri Shiina',
+      handle: '@tuturu',
+      avatar: '/static/img/pexels-ekamelev-920163.jpg'
+    },
+    title: 'Stardust Shakehand',
+    description: 'Looking at the stars with Okarin.',
+    images: [
+      '/static/img/pexels-ekamelev-920157.jpg',
+      '/static/img/pexels-ekamelev-920163.jpg',
+      '/static/img/pexels-francesco-ungaro-2440427.jpg'
+    ],
+    stats: {
+      likes: 89,
+      comments: 33
+    }
+  },
+  {
+    id: 4,
+    user: {
+      name: 'Daru',
+      handle: '@superhacker',
+      avatar: '/static/img/pexels-francesco-ungaro-3630025.jpg'
+    },
+    title: 'Server Maintenance',
+    description: 'Upgrading the IBN 5100 setup.',
+    images: [
+      '/static/img/pexels-alohaphotostudio-5319953.jpg',
+      '/static/img/pexels-bayram-yalcin-86843184-19240480.jpg'
+    ],
+    stats: {
+      likes: 56,
+      comments: 8
+    }
+  },
+  {
+    id: 5,
+    user: {
+      name: 'Suzuha Amane',
+      handle: '@parttimewarrior',
+      avatar: '/static/img/pexels-tomtookit-1914663-3538659.jpg'
+    },
+    title: 'Time Travel',
+    description: 'Just arrived from 2036.',
+    images: [
+      '/static/img/pexels-leonardo-lamas-32247393-7001550.jpg'
+    ],
+    stats: {
+      likes: 120,
+      comments: 15
     }
   }
 ]);
@@ -182,11 +196,11 @@ onLoad(() => {
   headerPaddingTop.value = `${top}px`;
 });
 
-const openPreview = (cardIndex, imageIndex) => {
-  // Show only images from the current card as requested
-  const currentCardImages = cards.value[cardIndex].images || [];
+const handlePreview = ({ card, index }) => {
+  // Show only images from the current card
+  const currentCardImages = card.images || [];
   previewImages.value = currentCardImages;
-  previewIndex.value = imageIndex;
+  previewIndex.value = index;
   previewShow.value = true;
 };
 
