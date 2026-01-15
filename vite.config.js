@@ -4,7 +4,6 @@ import { UnifiedViteWeappTailwindcssPlugin as uvtw } from 'weapp-tailwindcss/vit
 import tailwindcss from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     uni(),
