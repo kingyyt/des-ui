@@ -13,7 +13,7 @@
           <u-icon name="bell" color="#ffffff" size="24"></u-icon>
           <view class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></view>
         </view>
-        <u-image src="/static/img/pexels-didsss-1643919.jpg" width="32px" height="32px" shape="circle" border="1px solid rgba(255,255,255,0.2)"></u-image>
+        <u-image src="/static/img/1.png" width="32px" height="32px" shape="circle" border="1px solid rgba(255,255,255,0.2)"></u-image>
       </view>
       <text class="text-xl font-bold tracking-wide">Collections</text>
     </view>
@@ -83,16 +83,16 @@ const cards = ref([
     user: {
       name: 'Kurisu Makise',
       handle: '@steinsgate',
-      avatar: '/static/img/pexels-didsss-1643919.jpg'
+      avatar: '/static/img/1.png'
     },
     title: 'Laboratory Memories',
     description: 'A collection of moments from the Future Gadget Laboratory. These are precious memories that span across different world lines.',
     images: [
-      '/static/img/pexels-ekamelev-920157.jpg',
-      '/static/img/pexels-ekamelev-920163.jpg',
-      '/static/img/pexels-francesco-ungaro-2440427.jpg',
-      '/static/img/pexels-alohaphotostudio-5319953.jpg',
-      '/static/img/pexels-bayram-yalcin-86843184-19240480.jpg'
+      '/static/img/2.png',
+      '/static/img/3.png',
+      '/static/img/4.png',
+      '/static/img/5.png',
+      '/static/img/7.png'
     ],
     stats: {
       likes: 24,
@@ -104,15 +104,15 @@ const cards = ref([
     user: {
       name: 'Okabe Rintarou',
       handle: '@madscientist',
-      avatar: '/static/img/pexels-alexander-mass-748453803-18868016.jpg'
+      avatar: '/static/img/8.png'
     },
     title: 'Operation Skuld',
     description: 'The final mission to reach Steins Gate. El Psy Kongroo.',
     images: [
-      '/static/img/pexels-francesco-ungaro-3630025.jpg',
-      '/static/img/pexels-leonardo-lamas-32247393-7001550.jpg',
-      '/static/img/pexels-tomtookit-1914663-3538659.jpg',
-      '/static/img/pexels-didsss-1643919.jpg'
+      '/static/img/1.png',
+      '/static/img/2.png',
+      '/static/img/3.png',
+      '/static/img/4.png'
     ],
     stats: {
       likes: 104,
@@ -124,14 +124,14 @@ const cards = ref([
     user: {
       name: 'Mayuri Shiina',
       handle: '@tuturu',
-      avatar: '/static/img/pexels-ekamelev-920163.jpg'
+      avatar: '/static/img/3.png'
     },
     title: 'Stardust Shakehand',
     description: 'Looking at the stars with Okarin.',
     images: [
-      '/static/img/pexels-ekamelev-920157.jpg',
-      '/static/img/pexels-ekamelev-920163.jpg',
-      '/static/img/pexels-francesco-ungaro-2440427.jpg'
+      '/static/img/2.png',
+      '/static/img/3.png',
+      '/static/img/4.png'
     ],
     stats: {
       likes: 89,
@@ -143,13 +143,13 @@ const cards = ref([
     user: {
       name: 'Daru',
       handle: '@superhacker',
-      avatar: '/static/img/pexels-francesco-ungaro-3630025.jpg'
+      avatar: '/static/img/1.png'
     },
     title: 'Server Maintenance',
     description: 'Upgrading the IBN 5100 setup.',
     images: [
-      '/static/img/pexels-alohaphotostudio-5319953.jpg',
-      '/static/img/pexels-bayram-yalcin-86843184-19240480.jpg'
+      '/static/img/5.png',
+      '/static/img/7.png'
     ],
     stats: {
       likes: 56,
@@ -161,12 +161,12 @@ const cards = ref([
     user: {
       name: 'Suzuha Amane',
       handle: '@parttimewarrior',
-      avatar: '/static/img/pexels-tomtookit-1914663-3538659.jpg'
+      avatar: '/static/img/3.png'
     },
     title: 'Time Travel',
     description: 'Just arrived from 2036.',
     images: [
-      '/static/img/pexels-leonardo-lamas-32247393-7001550.jpg'
+      '/static/img/2.png'
     ],
     stats: {
       likes: 120,

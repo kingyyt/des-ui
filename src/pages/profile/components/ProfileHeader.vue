@@ -25,7 +25,7 @@
       <view class="relative mb-4 group">
         <view class="absolute -inset-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-full opacity-75 blur transition duration-500 group-hover:opacity-100"></view>
         <u-image 
-          src="/static/img/pexels-didsss-1643919.jpg" 
+          src="/static/img/1.png" 
           width="100px" 
           height="100px" 
           shape="circle" 

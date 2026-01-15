@@ -26,9 +26,9 @@
 
 <script setup>
 const groups = [
-  { name: 'UI Designers', members: '12k', image: '/static/img/pexels-alohaphotostudio-5319953.jpg' },
-  { name: 'UX Research', members: '8.5k', image: '/static/img/pexels-bayram-yalcin-86843184-19240480.jpg' },
-  { name: 'Prototyping', members: '5k', image: '/static/img/pexels-ekamelev-920163.jpg' },
-  { name: 'Frontend Dev', members: '15k', image: '/static/img/pexels-francesco-ungaro-2440427.jpg' }
+  { name: 'UI Designers', members: '12k', image: '/static/img/5.png' },
+  { name: 'UX Research', members: '8.5k', image: '/static/img/7.png' },
+  { name: 'Prototyping', members: '5k', image: '/static/img/3.png' },
+  { name: 'Frontend Dev', members: '15k', image: '/static/img/8.png' }
 ];
 </script>

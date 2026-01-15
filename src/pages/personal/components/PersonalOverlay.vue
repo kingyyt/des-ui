@@ -26,7 +26,7 @@
 
     <!-- Avatar -->
     <view class="mt-8 mb-4 relative">
-       <u-image src="/static/img/pexels-didsss-1643919.jpg" width="100px" height="100px" shape="circle" border="2px solid rgba(255,255,255,0.1)"></u-image>
+       <u-image src="/static/img/1.png" width="100px" height="100px" shape="circle" border="2px solid rgba(255,255,255,0.1)"></u-image>
        <!-- Online indicator -->
        <view class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#0a1128]"></view>
     </view>
@@ -38,7 +38,7 @@
     <!-- QR Code Area -->
     <view class="bg-white p-4 rounded-2xl mb-10 shadow-xl shadow-white/5">
        <view class="relative w-[180px] h-[180px]">
-          <u-image src="/static/img/pexels-ekamelev-920157.jpg" width="100%" height="100%" radius="8px"></u-image>
+          <u-image src="/static/img/2.png" width="100%" height="100%" radius="8px"></u-image>
           <view class="absolute inset-0 flex items-center justify-center mix-blend-hard-light bg-black/10">
               <u-icon name="scan" color="#000" size="60" class="opacity-50"></u-icon>
           </view>

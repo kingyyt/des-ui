@@ -24,9 +24,9 @@
 
 <script setup>
 const highlights = [
-  { image: '/static/img/pexels-francesco-ungaro-3630025.jpg' },
-  { image: '/static/img/pexels-leonardo-lamas-32247393-7001550.jpg' },
-  { image: '/static/img/pexels-tomtookit-1914663-3538659.jpg' },
-  { image: '/static/img/pexels-ekamelev-920157.jpg' }
+  { image: '/static/img/1.png' },
+  { image: '/static/img/2.png' },
+  { image: '/static/img/3.png' },
+  { image: '/static/img/4.png' }
 ];
 </script>
