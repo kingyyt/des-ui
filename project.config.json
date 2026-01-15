@@ -1,0 +1,16 @@
+{
+    "description": "Des App",
+    "setting": {
+        "urlCheck": false,
+        "es6": true,
+        "postcss": true,
+        "minified": true,
+        "newFeature": true,
+        "ignoreDevUnusedFiles": false,
+        "ignoreUploadUnusedFiles": false
+    },
+    "compileType": "miniprogram",
+    "libVersion": "latest",
+    "appid": "",
+    "projectname": "des-ui"
+}

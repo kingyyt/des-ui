@@ -1,15 +1,18 @@
 <template>
   <view class="min-h-screen bg-[#0a1128] text-white pb-24 overflow-hidden font-sans">
     <!-- Header -->
-    <view class="pt-12 px-6 flex justify-between items-center animate-fade-in-down">
-      <text class="text-xl font-bold tracking-wide">Collections</text>
-      <view class="flex items-center space-x-4">
+    <view 
+      class="px-6 flex justify-start items-center animate-fade-in-down"
+      :style="{ paddingTop: headerPaddingTop, height: '88px', alignItems: 'center' }"
+    >
+      <view class="flex items-center space-x-4 mr-4">
         <view class="relative">
           <u-icon name="bell" color="#ffffff" size="24"></u-icon>
           <view class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></view>
         </view>
         <u-image src="/static/img/pexels-didsss-1643919.jpg" width="32px" height="32px" shape="circle" border="1px solid rgba(255,255,255,0.2)"></u-image>
       </view>
+      <text class="text-xl font-bold tracking-wide">Collections</text>
     </view>
 
     <!-- Greeting -->
@@ -99,94 +102,98 @@
   </view>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 import CustomTabbar from '@/components/CustomTabbar/CustomTabbar.vue';
 import ImagePreview from '@/components/ImagePreview/ImagePreview.vue';
 import PropertyDetail from '@/components/PropertyDetail/PropertyDetail.vue';
 
-export default {
-  components: {
-    CustomTabbar,
-    ImagePreview,
-    PropertyDetail
-  },
-  data() {
-    return {
-      title: 'Hello',
-      // Detail state
-      detailShow: false,
-      currentCard: {},
-      
-      // Preview state
-      previewShow: false,
-      previewImages: [],
-      previewIndex: 0,
-      
-      cards: [
-        {
-          id: 1,
-          user: {
-            name: 'Kurisu Makise',
-            handle: '@steinsgate',
-            avatar: '/static/img/pexels-didsss-1643919.jpg'
-          },
-          images: [
-            '/static/img/pexels-ekamelev-920157.jpg',
-            '/static/img/pexels-ekamelev-920163.jpg',
-            '/static/img/pexels-francesco-ungaro-2440427.jpg',
-            '/static/img/pexels-alohaphotostudio-5319953.jpg',
-            '/static/img/pexels-bayram-yalcin-86843184-19240480.jpg'
-          ],
-          stats: {
-            likes: 24,
-            comments: 12
-          }
-        },
-        {
-          id: 2,
-          user: {
-            name: 'Okabe Rintarou',
-            handle: '@madscientist',
-            avatar: '/static/img/pexels-alexander-mass-748453803-18868016.jpg'
-          },
-          images: [
-            '/static/img/pexels-francesco-ungaro-3630025.jpg',
-            '/static/img/pexels-leonardo-lamas-32247393-7001550.jpg',
-            '/static/img/pexels-tomtookit-1914663-3538659.jpg',
-            '/static/img/pexels-didsss-1643919.jpg',
-            '/static/img/pexels-ekamelev-920157.jpg'
-          ],
-          stats: {
-            likes: 104,
-            comments: 42
-          }
-        }
-      ]
+const title = ref('Hello');
+// Detail state
+const detailShow = ref(false);
+const currentCard = ref({});
+
+// Preview state
+const previewShow = ref(false);
+const previewImages = ref([]);
+const previewIndex = ref(0);
+const headerPaddingTop = ref('48px');
+
+const cards = ref([
+  {
+    id: 1,
+    user: {
+      name: 'Kurisu Makise',
+      handle: '@steinsgate',
+      avatar: '/static/img/pexels-didsss-1643919.jpg'
+    },
+    images: [
+      '/static/img/pexels-ekamelev-920157.jpg',
+      '/static/img/pexels-ekamelev-920163.jpg',
+      '/static/img/pexels-francesco-ungaro-2440427.jpg',
+      '/static/img/pexels-alohaphotostudio-5319953.jpg',
+      '/static/img/pexels-bayram-yalcin-86843184-19240480.jpg'
+    ],
+    stats: {
+      likes: 24,
+      comments: 12
     }
   },
-  onLoad() {
-    // Hide native tabbar just in case App.vue didn't catch it
-    uni.hideTabBar({
-      fail: () => {}
-    })
-  },
-  methods: {
-    openPreview(cardIndex, imageIndex) {
-      const allImages = this.cards.reduce((acc, card) => acc.concat(card.images || []), []);
-      const offset = this.cards
-        .slice(0, cardIndex)
-        .reduce((sum, card) => sum + ((card.images && card.images.length) || 0), 0);
-
-      this.previewImages = allImages;
-      this.previewIndex = offset + imageIndex;
-      this.previewShow = true;
+  {
+    id: 2,
+    user: {
+      name: 'Okabe Rintarou',
+      handle: '@madscientist',
+      avatar: '/static/img/pexels-alexander-mass-748453803-18868016.jpg'
     },
-    openDetail(card) {
-      this.currentCard = card;
-      this.detailShow = true;
+    images: [
+      '/static/img/pexels-francesco-ungaro-3630025.jpg',
+      '/static/img/pexels-leonardo-lamas-32247393-7001550.jpg',
+      '/static/img/pexels-tomtookit-1914663-3538659.jpg',
+      '/static/img/pexels-didsss-1643919.jpg',
+      '/static/img/pexels-ekamelev-920157.jpg'
+    ],
+    stats: {
+      likes: 104,
+      comments: 42
     }
   }
-}
+]);
+
+onLoad(() => {
+  // Hide native tabbar just in case App.vue didn't catch it
+  uni.hideTabBar({
+    fail: () => {}
+  });
+  
+  // Calculate safe area for header
+  const systemInfo = uni.getSystemInfoSync();
+  let top = systemInfo.statusBarHeight || 0;
+  
+  // #ifdef MP-WEIXIN
+  const menuButton = uni.getMenuButtonBoundingClientRect();
+  if (menuButton) {
+      // Use menuButton.top + 8px to ensure good clearance and alignment
+      top = menuButton.top + 4;
+  }
+  // #endif
+  
+  headerPaddingTop.value = `${top}px`;
+});
+
+const openPreview = (cardIndex, imageIndex) => {
+  // Show only images from the current card as requested
+  const currentCardImages = cards.value[cardIndex].images || [];
+  previewImages.value = currentCardImages;
+  previewIndex.value = imageIndex;
+  previewShow.value = true;
+};
+
+const openDetail = (card) => {
+  currentCard.value = card;
+  detailShow.value = true;
+};
 </script>
 
 <style>

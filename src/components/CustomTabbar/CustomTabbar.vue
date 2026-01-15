@@ -27,24 +27,21 @@
   </view>
 </template>
 
-<script>
-export default {
-  props: {
-    current: {
-      type: Number,
-      default: 0
-    }
-  },
-  methods: {
-    switchTab(path) {
-      // 修复切换 Tab 报错问题，确保路径不带参数且格式正确
-      uni.switchTab({
-        url: path,
-        fail: (err) => {
-          console.error('Switch tab failed:', err);
-        }
-      });
-    }
+<script setup>
+const props = defineProps({
+  current: {
+    type: Number,
+    default: 0
   }
-}
+});
+
+const switchTab = (path) => {
+  // 修复切换 Tab 报错问题，确保路径不带参数且格式正确
+  uni.switchTab({
+    url: path,
+    fail: (err) => {
+      console.error('Switch tab failed:', err);
+    }
+  });
+};
 </script>

@@ -13,7 +13,7 @@
     >
       <!-- Top Bar (Fade In Down) -->
       <view 
-        class="absolute top-0 left-0 right-0 z-20 pt-12 px-6 flex justify-between items-center animate-fade-in-down bg-gradient-to-b from-black/50 to-transparent pb-10 transition-opacity duration-200"
+        class="absolute top-0 left-0 right-0 z-20 pt-12 px-6 flex items-center gap-4 animate-fade-in-down bg-gradient-to-b from-black/50 to-transparent pb-10 transition-opacity duration-200"
         :style="{ opacity: headerOpacity }"
         @click.stop
       >
@@ -25,7 +25,7 @@
           <u-icon name="arrow-left" color="#ffffff" size="20"></u-icon>
         </view>
         
-        <!-- Save Button -->
+        <!-- Save Button (Moved to left) -->
         <view 
           class="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center active:scale-95 transition-transform"
           @click="handleSave"
@@ -79,182 +79,185 @@
   </view>
 </template>
 
-<script>
-export default {
-  name: 'ImagePreview',
-  props: {
-    show: {
-      type: Boolean,
-      default: false
-    },
-    images: {
-      type: Array,
-      default: () => []
-    },
-    initialIndex: {
-      type: Number,
-      default: 0
-    }
-  },
-  data() {
-    return {
-      currentIndex: 0,
-      isClosing: false,
-      isAnimating: false,
-      
-      // Drag state
-      startY: 0,
-      startX: 0,
-      currentY: 0,
-      isDragging: false,
-      isRestoring: false,
-      headerOpacity: 1
-    }
-  },
-  computed: {
-    maskStyle() {
-      const baseOpacity = 0.9;
-      let opacity = baseOpacity;
-      if (this.isDragging || this.isRestoring) {
-        // Fade out background as we drag
-        const dragProgress = Math.min(1, Math.abs(this.currentY) / 400);
-        opacity = baseOpacity * (1 - dragProgress);
-      }
-      const transition = this.isRestoring ? 'transition: background-color 0.3s ease-out;' : 'transition: none;';
-      return `background-color: rgba(0, 0, 0, ${opacity}); ${transition}`;
-    },
-    imageStyle() {
-      if (!this.isDragging && !this.isRestoring) return '';
-      const scale = Math.max(0.5, 1 - Math.abs(this.currentY) / 1000);
-      const transition = this.isRestoring ? 'transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);' : 'transition: none;';
-      return `transform: translate3d(0, ${this.currentY}px, 0) scale(${scale}); ${transition}`;
-    }
-  },
-  watch: {
-    show(val) {
-      if (val) {
-        this.currentIndex = this.initialIndex;
-        this.isClosing = false;
-        this.isAnimating = true;
-        this.resetDrag();
-        // Remove animation class after animation ends to prevent transform issues with swiper
-        setTimeout(() => {
-          this.isAnimating = false;
-        }, 600);
-      }
-    },
-    initialIndex(val) {
-      this.currentIndex = val;
-    }
-  },
-  methods: {
-    resetDrag() {
-      this.startY = 0;
-      this.startX = 0;
-      this.currentY = 0;
-      this.isDragging = false;
-      this.isRestoring = false;
-      this.headerOpacity = 1;
-    },
-    handleTouchStart(e) {
-      if (this.isAnimating || this.isRestoring || e.touches.length > 1) return;
-      this.startY = e.touches[0].clientY;
-      this.startX = e.touches[0].clientX;
-      this.isDragging = false;
-    },
-    handleTouchMove(e) {
-      if (this.isAnimating || this.isRestoring || e.touches.length > 1) return;
-      const touchY = e.touches[0].clientY;
-      const touchX = e.touches[0].clientX;
-      const deltaY = touchY - this.startY;
-      const deltaX = touchX - this.startX;
-      
-      // Only start dragging if moved vertically significantly AND more than horizontally
-      if (!this.isDragging) {
-        if (Math.abs(deltaY) > 10 && Math.abs(deltaY) > Math.abs(deltaX)) {
-          this.isDragging = true;
-        }
-      }
-      
-      if (this.isDragging) {
-        this.currentY = deltaY;
-        // Fade out UI elements
-        this.headerOpacity = Math.max(0, 1 - Math.abs(deltaY) / 200);
-      }
-    },
-    handleTouchEnd() {
-      if (!this.isDragging) return;
-      
-      if (Math.abs(this.currentY) > 150) {
-        // Dragged far enough to close
-        this.handleClose();
-      } else {
-        // Reset position with animation
-        this.isRestoring = true;
-        this.isDragging = false;
-        this.currentY = 0;
-        this.headerOpacity = 1;
-        
-        setTimeout(() => {
-          this.isRestoring = false;
-        }, 300);
-      }
-    },
-    onSwiperChange(e) {
-      this.currentIndex = e.detail.current;
-    },
-    handleClose() {
-      this.isClosing = true;
-      // Wait for animation to finish
-      setTimeout(() => {
-        this.$emit('close');
-        this.isClosing = false;
-      }, 500);
-    },
-    handleSave() {
-      const currentImage = this.images[this.currentIndex];
-      
-      // #ifdef H5
-      // Create a temporary link to download
-      const link = document.createElement('a');
-      link.href = currentImage;
-      link.download = `image-${Date.now()}`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      uni.showToast({
-        title: 'Downloading...',
-        icon: 'none'
-      });
-      // #endif
+<script setup>
+import { ref, computed, watch } from 'vue';
 
-      // #ifndef H5
-      uni.downloadFile({
-        url: currentImage,
-        success: (res) => {
-          if (res.statusCode === 200) {
-            uni.saveImageToPhotosAlbum({
-              filePath: res.tempFilePath,
-              success: () => {
-                uni.showToast({
-                  title: 'Saved to Album',
-                  icon: 'success'
-                });
-              },
-              fail: () => {
-                uni.showToast({
-                  title: 'Save Failed',
-                  icon: 'none'
-                });
-              }
-            });
-          }
-        }
-      });
-      // #endif
+const props = defineProps({
+  show: {
+    type: Boolean,
+    default: false
+  },
+  images: {
+    type: Array,
+    default: () => []
+  },
+  initialIndex: {
+    type: Number,
+    default: 0
+  }
+});
+
+const emit = defineEmits(['close']);
+
+const currentIndex = ref(0);
+const isClosing = ref(false);
+const isAnimating = ref(false);
+
+// Drag state
+const startY = ref(0);
+const startX = ref(0);
+const currentY = ref(0);
+const isDragging = ref(false);
+const isRestoring = ref(false);
+const headerOpacity = ref(1);
+
+const maskStyle = computed(() => {
+  const baseOpacity = 0.9;
+  let opacity = baseOpacity;
+  if (isDragging.value || isRestoring.value) {
+    // Fade out background as we drag
+    const dragProgress = Math.min(1, Math.abs(currentY.value) / 400);
+    opacity = baseOpacity * (1 - dragProgress);
+  }
+  const transition = isRestoring.value ? 'transition: background-color 0.3s ease-out;' : 'transition: none;';
+  return `background-color: rgba(0, 0, 0, ${opacity}); ${transition}`;
+});
+
+const imageStyle = computed(() => {
+  if (!isDragging.value && !isRestoring.value) return '';
+  const scale = Math.max(0.5, 1 - Math.abs(currentY.value) / 1000);
+  const transition = isRestoring.value ? 'transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);' : 'transition: none;';
+  return `transform: translate3d(0, ${currentY.value}px, 0) scale(${scale}); ${transition}`;
+});
+
+watch(() => props.show, (val) => {
+  if (val) {
+    currentIndex.value = props.initialIndex;
+    isClosing.value = false;
+    isAnimating.value = true;
+    resetDrag();
+    // Remove animation class after animation ends to prevent transform issues with swiper
+    setTimeout(() => {
+      isAnimating.value = false;
+    }, 600);
+  }
+});
+
+watch(() => props.initialIndex, (val) => {
+  currentIndex.value = val;
+});
+
+const resetDrag = () => {
+  startY.value = 0;
+  startX.value = 0;
+  currentY.value = 0;
+  isDragging.value = false;
+  isRestoring.value = false;
+  headerOpacity.value = 1;
+};
+
+const handleTouchStart = (e) => {
+  if (isAnimating.value || isRestoring.value || e.touches.length > 1) return;
+  startY.value = e.touches[0].clientY;
+  startX.value = e.touches[0].clientX;
+  isDragging.value = false;
+};
+
+const handleTouchMove = (e) => {
+  if (isAnimating.value || isRestoring.value || e.touches.length > 1) return;
+  const touchY = e.touches[0].clientY;
+  const touchX = e.touches[0].clientX;
+  const deltaY = touchY - startY.value;
+  const deltaX = touchX - startX.value;
+  
+  // Only start dragging if moved vertically significantly AND more than horizontally
+  if (!isDragging.value) {
+    if (Math.abs(deltaY) > 10 && Math.abs(deltaY) > Math.abs(deltaX)) {
+      isDragging.value = true;
     }
   }
-}
+  
+  if (isDragging.value) {
+    currentY.value = deltaY;
+    // Fade out UI elements
+    headerOpacity.value = Math.max(0, 1 - Math.abs(deltaY) / 200);
+  }
+};
+
+const handleTouchEnd = () => {
+  if (!isDragging.value) return;
+  
+  if (Math.abs(currentY.value) > 150) {
+    // Dragged far enough to close
+    handleClose();
+  } else {
+    // Reset position with animation
+    isRestoring.value = true;
+    isDragging.value = false;
+    currentY.value = 0;
+    headerOpacity.value = 1;
+    
+    setTimeout(() => {
+      isRestoring.value = false;
+    }, 300);
+  }
+};
+
+const onSwiperChange = (e) => {
+  currentIndex.value = e.detail.current;
+};
+
+const handleClose = () => {
+  isClosing.value = true;
+  // Wait for animation to finish
+  setTimeout(() => {
+    emit('close');
+    isClosing.value = false;
+  }, 500);
+};
+
+const handleSave = () => {
+  const currentImage = props.images[currentIndex.value];
+  
+  // #ifdef H5
+  // Create a temporary link to download
+  const link = document.createElement('a');
+  link.href = currentImage;
+  link.download = `image-${Date.now()}`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  uni.showToast({
+    title: 'Downloading...',
+    icon: 'none'
+  });
+  // #endif
+
+  // #ifndef H5
+  uni.downloadFile({
+    url: currentImage,
+    success: (res) => {
+      if (res.statusCode === 200) {
+        uni.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success: () => {
+            uni.showToast({
+              title: 'Saved to Album',
+              icon: 'success'
+            });
+          },
+          fail: () => {
+            uni.showToast({
+              title: 'Save Failed',
+              icon: 'none'
+            });
+          }
+        });
+      }
+    }
+  });
+  // #endif
+};
 </script>
 
 <style scoped>
