@@ -15,7 +15,7 @@
       }
     },
     {
-      "path": "pages/search/search",
+      "path": "pages/personal/personal",
       "style": {
         "navigationStyle": "custom"
       }
@@ -34,14 +34,14 @@
     "backgroundColor": "#0a1128"
   },
   "tabBar": {
-    "color": "#94a3b8",
+    "color": "#ffffff",
     "selectedColor": "#ffffff",
-    "backgroundColor": "#0f172a",
-    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
     "list": [
       {
-        "pagePath": "pages/search/search",
-        "text": "Search"
+        "pagePath": "pages/personal/personal",
+        "text": "Personal"
       },
       {
         "pagePath": "pages/index/index",

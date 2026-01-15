@@ -3,9 +3,9 @@
     <!-- Tabbar Container -->
     <view class="bg-[#0f172a] rounded-full h-16 flex items-center justify-around px-6 shadow-2xl border border-white/10 relative">
       
-      <!-- Search Tab -->
-      <view class="flex items-center justify-center w-12 h-12" @click="switchTab('/pages/search/search')">
-        <u-icon name="search" :color="current === 0 ? '#ffffff' : '#94a3b8'" size="28"></u-icon>
+      <!-- Personal Tab -->
+      <view class="flex items-center justify-center w-12 h-12" @click="switchTab('/pages/personal/personal')">
+        <u-icon name="account" :color="current === 0 ? '#ffffff' : '#94a3b8'" size="28"></u-icon>
       </view>
 
       <!-- Center Floating Button (Collections) -->
