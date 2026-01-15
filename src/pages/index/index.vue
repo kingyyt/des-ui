@@ -13,7 +13,7 @@
           <u-icon name="bell" color="#ffffff" size="24"></u-icon>
           <view class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></view>
         </view>
-        <u-image src="/static/img/1.png" width="32px" height="32px" shape="circle" border="1px solid rgba(255,255,255,0.2)"></u-image>
+        <u-image src="/static/img/7.png" width="32px" height="32px" shape="circle" border="1px solid rgba(255,255,255,0.2)"></u-image>
       </view>
       <text class="text-xl font-bold tracking-wide">Collections</text>
     </view>

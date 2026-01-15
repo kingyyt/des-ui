@@ -42,10 +42,10 @@
           
           <!-- Expanded Content (Map Placeholder) -->
           <view class="absolute inset-0 transition-opacity duration-500 delay-200" :class="expanded && isGroup1Active ? 'opacity-100' : 'opacity-0 pointer-events-none'">
-             <u-image src="/static/img/pexels-ekamelev-920157.jpg" width="100%" height="100%" mode="aspectFill"></u-image>
+             <u-image src="/static/img/2.png" width="100%" height="100%" mode="aspectFill"></u-image>
              <!-- Avatar overlays -->
              <view class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border-4 border-white overflow-hidden shadow-lg">
-                <u-image src="/static/img/pexels-didsss-1643919.jpg" width="100%" height="100%"></u-image>
+                <u-image src="/static/img/1.png" width="100%" height="100%"></u-image>
              </view>
           </view>
        </view>
